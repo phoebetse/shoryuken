@@ -80,4 +80,29 @@ RSpec.describe Shoryuken::DefaultWorkerRegistry do
       end
     end
   end
+
+  describe 'WIP tests' do
+    context 'register_worker is called twice' do
+      let(:queue) { 'some-queue-name' }
+      let(:worker_class) do
+        worker_class = Class.new do
+          include Shoryuken::Worker
+
+          shoryuken_options queue: 'some-queue-name'
+
+          def perform(sqs_msg, body); end
+        end
+      end
+
+      before do
+        subject.register_worker(queue, worker_class)
+      end
+
+      it 'does not error' do
+        subject.register_worker(queue, worker_class)
+        expect { subject }.to_not raise_error
+      end
+    end
+
+  end
 end
